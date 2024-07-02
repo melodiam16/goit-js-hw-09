@@ -1,3 +1,8 @@
+// Описаний в документації
+import SimpleLightbox from 'simplelightbox';
+// Додатковий імпорт стилів
+import 'simplelightbox/dist/simple-lightbox.min.css';
+
 const images = [
   {
     preview:
@@ -65,43 +70,29 @@ const images = [
 ];
 
 const gallery = document.querySelector('.gallery');
-gallery.addEventListener('click', handlerGetPhoto);
-
-function handlerGetPhoto(event) {
-  event.preventDefault();
-  if (event.currentTarget === event.target) {
-    return;
-  }
-
-  const currentId = event.target.dataset.source;
-  const altText = event.target.alt;
-
-  const instance = basicLightbox.create(`
-	 <div class="modal">
-        <img class="js-modal-image" src="${currentId}" alt="${altText}" >
-    </div>
-`);
-  instance.show();
-}
 
 function createGalllery(arr) {
   return arr
     .map(
       ({ preview, original, description }) => `<li class="gallery-item">
-  <a class="gallery-link" href=${original}>
-    <img
-      class="gallery-image"
-      src=${preview}
-      data-source=${original}
-      alt=${description}
-      width="360px"
-      heigth="200px"
-    />
-  </a>
-</li>
+        <a class="gallery-link" href="${original}">
+          <img
+            class="gallery-image"
+            src="${preview}"
+            alt="${description}"
+            width="360px"
+            heigth="200px"
+          />
+        </a>
+      </li>
 `
     )
     .join('');
 }
 
 gallery.insertAdjacentHTML('afterbegin', createGalllery(images));
+
+new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
